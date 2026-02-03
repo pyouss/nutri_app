@@ -29,11 +29,41 @@ function sanitizeError(error: unknown, isProduction: boolean): {
   message: string
   code?: string
   details?: unknown
+  debug?: {
+    hasUrl: boolean
+    hasKey: boolean
+    urlFormat?: string
+    keyFormat?: string
+  }
 } {
+  // Always include debug info about env vars (safe to expose)
+  const debug = {
+    hasUrl: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
+    hasKey: !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    urlFormat: process.env.NEXT_PUBLIC_SUPABASE_URL 
+      ? (process.env.NEXT_PUBLIC_SUPABASE_URL.startsWith('https://') ? 'valid' : 'invalid-protocol')
+      : 'missing',
+    keyFormat: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+      ? (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY.startsWith('eyJ') ? 'valid-jwt' : 'invalid-format')
+      : 'missing',
+  }
+
   if (isProduction) {
-    // In production, only return generic error message
+    // In production, return generic error message but include safe debug info
+    let errorMessage = 'Supabase connection failed. Please check your configuration.'
+    
+    // Provide more specific error if we can identify the issue
+    if (!debug.hasUrl || !debug.hasKey) {
+      errorMessage = 'Missing Supabase environment variables. Please check Vercel project settings.'
+    } else if (debug.urlFormat !== 'valid') {
+      errorMessage = 'Invalid Supabase URL format. Must start with https://'
+    } else if (debug.keyFormat !== 'valid-jwt') {
+      errorMessage = 'Invalid Supabase anon key format. Must be a valid JWT token.'
+    }
+    
     return {
-      message: 'Supabase connection failed. Please check your configuration.',
+      message: errorMessage,
+      debug,
     }
   }
 
@@ -64,6 +94,7 @@ function sanitizeError(error: unknown, isProduction: boolean): {
   return {
     message: errorMessage,
     code: errorCode,
+    debug,
     ...(Object.keys(errorDetails).length > 0 ? { details: errorDetails } : {}),
   }
 }
@@ -119,6 +150,7 @@ export async function GET() {
         error: sanitizedError.message,
         ...(sanitizedError.code ? { code: sanitizedError.code } : {}),
         ...(sanitizedError.details ? { details: sanitizedError.details } : {}),
+        ...(sanitizedError.debug ? { debug: sanitizedError.debug } : {}),
         timestamp: new Date().toISOString(),
       },
       { status: 500 }
