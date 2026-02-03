@@ -1,0 +1,145 @@
+# generated: 2026-02-03 14:13
+# project: nutri_app
+# project_key: NOKEY
+# tracking_system: file-system
+# story_location: "{project-root}/_bmad-output/implementation-artifacts"
+
+# STATUS DEFINITIONS:
+# ==================
+# Epic Status:
+#   - backlog: Epic not yet started
+#   - in-progress: Epic actively being worked on
+#   - done: All stories in epic completed
+#
+# Epic Status Transitions:
+#   - backlog → in-progress: Automatically when first story is created (via create-story)
+#   - in-progress → done: Manually when all stories reach 'done' status
+#
+# Story Status:
+#   - backlog: Story only exists in epic file
+#   - ready-for-dev: Story file created in stories folder
+#   - in-progress: Developer actively working on implementation
+#   - review: Ready for code review (via Dev's code-review workflow)
+#   - done: Story completed
+#
+# Retrospective Status:
+#   - optional: Can be completed but not required
+#   - done: Retrospective has been completed
+#
+# WORKFLOW NOTES:
+# ===============
+# - Epic transitions to 'in-progress' automatically when first story is created
+# - Stories can be worked in parallel if team capacity allows
+# - SM typically creates next story after previous one is 'done' to incorporate learnings
+# - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
+
+generated: 2026-02-03 14:13
+project: nutri_app
+project_key: NOKEY
+tracking_system: file-system
+story_location: "{project-root}/_bmad-output/implementation-artifacts"
+
+development_status:
+  # Epic 1: Project Setup & Infrastructure
+  epic-1: in-progress
+  1-1-initialize-next-js-project: done
+  1-2-configure-supabase-project: done
+  1-3-set-up-database-schema-foundation: done
+  1-4-integrate-chakra-ui-design-system: done
+  1-5-configure-deployment-pipeline: in-progress
+  epic-1-retrospective: optional
+
+  # Epic 2: User Authentication & Account Management
+  epic-2: backlog
+  2-1-user-registration: backlog
+  2-2-user-login: backlog
+  2-3-user-logout: backlog
+  2-4-session-management-and-protected-routes: backlog
+  2-5-account-information-display: backlog
+  epic-2-retrospective: optional
+
+  # Epic 3: Basic Meal Logging
+  epic-3: backlog
+  3-1-create-meal-entry-form: backlog
+  3-2-save-meal-to-database: backlog
+  3-3-view-meal-list: backlog
+  3-4-search-and-filter-meals: backlog
+  3-5-edit-meal: backlog
+  3-6-delete-meal: backlog
+  3-7-duplicate-meal: backlog
+  3-8-log-meals-for-specific-dates: backlog
+  epic-3-retrospective: optional
+
+  # Epic 4: Learning & Memory System
+  epic-4: backlog
+  4-1-store-meal-and-ingredient-history: backlog
+  4-2-track-meal-frequency-patterns: backlog
+  4-3-learn-portion-preferences: backlog
+  4-4-learn-ingredient-combinations: backlog
+  4-5-build-personalized-database-progressively: backlog
+  4-6-learn-from-user-corrections: backlog
+  4-7-database-convergence-logic: backlog
+  epic-4-retrospective: optional
+
+  # Epic 5: Smart Suggestions & Autocomplete
+  epic-5: backlog
+  5-1-meal-name-autocomplete: backlog
+  5-2-ingredient-name-autocomplete: backlog
+  5-3-frequency-weighted-suggestion-ranking: backlog
+  5-4-complete-meal-suggestion-detection: backlog
+  5-5-one-tap-logging-for-habits: backlog
+  5-6-pattern-based-ingredient-and-macro-suggestions: backlog
+  epic-5-retrospective: optional
+
+  # Epic 6: LLM Agent Integration
+  epic-6: backlog
+  6-1-natural-language-meal-description-interface: backlog
+  6-2-llm-macro-estimation: backlog
+  6-3-confidence-level-calculation: backlog
+  6-4-refine-macro-estimates: backlog
+  6-5-graceful-handling-of-uncertain-ingredients: backlog
+  epic-6-retrospective: optional
+
+  # Epic 7: Progress Visualization & Dashboard
+  epic-7: backlog
+  7-1-daily-macro-progress-display: backlog
+  7-2-visual-progress-indicators: backlog
+  7-3-daily-meal-list-view: backlog
+  7-4-daily-macro-summary: backlog
+  7-5-weekly-macro-summary: backlog
+  7-6-tracking-data-summaries: backlog
+  7-7-personalized-ingredient-database-view: backlog
+  7-8-personalized-meal-templates-view: backlog
+  epic-7-retrospective: optional
+
+  # Epic 8: Goal Management
+  epic-8: backlog
+  8-1-set-macro-goals: backlog
+  8-2-view-progress-toward-goals: backlog
+  8-3-adjust-macro-goals: backlog
+  epic-8-retrospective: optional
+
+  # Epic 9: Multi-Level Tracking
+  epic-9: backlog
+  9-1-daily-level-meal-tracking: backlog
+  9-2-track-batch-cooked-meals: backlog
+  9-3-associate-batch-meals-with-daily-entries: backlog
+  9-4-adjust-batch-cooking-proportions: backlog
+  epic-9-retrospective: optional
+
+  # Epic 10: Data Quality & Refinement
+  epic-10: backlog
+  10-1-correct-macro-values-in-logged-meals: backlog
+  10-2-refine-ingredient-macro-values: backlog
+  10-3-refine-meal-templates: backlog
+  10-4-detect-database-inconsistencies: backlog
+  10-5-resolve-database-inconsistencies: backlog
+  epic-10-retrospective: optional
+
+  # Epic 11: Responsive Design & Platform Access
+  epic-11: backlog
+  11-1-mobile-device-access: backlog
+  11-2-desktop-device-access: backlog
+  11-3-responsive-design-implementation: backlog
+  11-4-online-only-operation: backlog
+  epic-11-retrospective: optional

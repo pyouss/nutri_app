@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>nutri_app - Design Direction Explorations</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: #F7FAFC;
+            color: #2D3748;
+            line-height: 1.5;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 32px 24px;
+        }
+        
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #1A202C;
+        }
+        
+        .subtitle {
+            font-size: 18px;
+            color: #718096;
+            margin-bottom: 48px;
+        }
+        
+        .directions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+            gap: 32px;
+            margin-bottom: 48px;
+        }
+        
+        .direction-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .direction-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .direction-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1A202C;
+        }
+        
+        .direction-description {
+            font-size: 16px;
+            color: #718096;
+            margin-bottom: 24px;
+        }
+        
+        .mockup {
+            background: #EDF2F7;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 16px;
+            min-height: 400px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .mockup-header {
+            background: white;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .mockup-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1A202C;
+        }
+        
+        .btn-primary {
+            background: #00B4A6;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .progress-rings {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+            justify-content: center;
+        }
+        
+        .ring {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .ring-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 8px solid #E2E8F0;
+        }
+        
+        .ring-fill {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 8px solid;
+            clip-path: polygon(50% 0%, 50% 0%, 100% 0%, 100% 50%, 50% 50%);
+        }
+        
+        .ring-protein { border-color: #48BB78; }
+        .ring-carbs { border-color: #4299E1; }
+        .ring-fats { border-color: #ED8936; }
+        .ring-calories { border-color: #00B4A6; }
+        
+        .ring-label {
+            font-size: 12px;
+            color: #718096;
+            margin-top: 4px;
+        }
+        
+        .ring-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1A202C;
+        }
+        
+        .meal-card {
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .meal-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1A202C;
+        }
+        
+        .meal-macros {
+            font-size: 14px;
+            color: #718096;
+        }
+        
+        .input-field {
+            background: white;
+            border: 2px solid #E2E8F0;
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 16px;
+            width: 100%;
+            margin-bottom: 12px;
+        }
+        
+        .suggestion-list {
+            background: white;
+            border-radius: 8px;
+            padding: 8px;
+            margin-top: 8px;
+        }
+        
+        .suggestion-item {
+            padding: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .suggestion-item:hover {
+            background: #F7FAFC;
+        }
+        
+        .chat-bubble {
+            background: white;
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin-bottom: 12px;
+            max-width: 80%;
+        }
+        
+        .chat-user {
+            background: #00B4A6;
+            color: white;
+            margin-left: auto;
+        }
+        
+        .grid-layout {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        
+        .timeline-item {
+            display: flex;
+            gap: 16px;
+            padding: 16px;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+        
+        .timeline-time {
+            font-size: 14px;
+            color: #718096;
+            min-width: 60px;
+        }
+        
+        .split-screen {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        
+        .features-list {
+            list-style: none;
+            margin-top: 16px;
+        }
+        
+        .features-list li {
+            padding: 8px 0;
+            font-size: 14px;
+            color: #718096;
+        }
+        
+        .features-list li:before {
+            content: "✓ ";
+            color: #48BB78;
+            font-weight: 600;
+            margin-right: 8px;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 24px;
+        }
+        
+        .comparison-table th,
+        .comparison-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #E2E8F0;
+        }
+        
+        .comparison-table th {
+            background: #F7FAFC;
+            font-weight: 600;
+            color: #1A202C;
+        }
+        
+        .tag {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 8px;
+        }
+        
+        .tag-primary { background: #00B4A6; color: white; }
+        .tag-success { background: #48BB78; color: white; }
+        .tag-info { background: #4299E1; color: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>nutri_app Design Direction Explorations</h1>
+        <p class="subtitle">Explore different visual approaches for the nutrition tracking app. Each direction represents a complete design vision.</p>
+        
+        <div class="directions-grid">
+            <!-- Direction 1: Minimal Card-Based -->
+            <div class="direction-card">
+                <h2 class="direction-title">1. Minimal Card-Based</h2>
+                <p class="direction-description">Clean, spacious card-based layout with generous white space. Focus on clarity and uncluttered design.</p>
+                <div class="mockup">
+                    <div class="mockup-header">
+                        <div class="mockup-title">Today's Meals</div>
+                        <button class="btn-primary">+ Log Meal</button>
+                    </div>
+                    <div class="progress-rings">
+                        <div class="ring">
+                            <div class="ring-bg"></div>
+                            <div class="ring-fill ring-protein"></div>
+                            <div class="ring-value">120g</div>
+                            <div class="ring-label">Protein</div>
+                        </div>
+                        <div class="ring">
+                            <div class="ring-bg"></div>
+                            <div class="ring-fill ring-carbs"></div>
+                            <div class="ring-value">180g</div>
+                            <div class="ring-label">Carbs</div>
+                        </div>
+                    </div>
+                    <div class="meal-card">
+                        <div>
+                            <div class="meal-name">Chicken & Rice</div>
+                            <div class="meal-macros">45g P • 60g C • 12g F</div>
+                        </div>
+                    </div>
+                    <div class="meal-card">
+                        <div>
+                            <div class="meal-name">3 Eggs</div>
+                            <div class="meal-macros">18g P • 1g C • 15g F</div>
+                        </div>
+                    </div>
+                </div>
+                <ul class="features-list">
+                    <li>Generous spacing and white space</li>
+                    <li>Clean card-based meal display</li>
+                    <li>Prominent progress indicators</li>
+                    <li>Minimal visual noise</li>
+                </ul>
+            </div>
+            
+            <!-- Direction 2: Dashboard-Focused -->
+            <div class="direction-card">
+                <h2 class="direction-title">2. Dashboard-Focused</h2>
+                <p class="direction-description">Data-first approach with prominent progress rings and macro visualization. Progress is the hero.</p>
+                <div class="mockup">
+                    <div class="mockup-header">
+                        <div class="mockup-title">Macro Progress</div>
+                    </div>
+                    <div class="progress-rings">
+                        <div class="ring">
+                            <div class="ring-bg"></div>
+                            <div class="ring-fill ring-protein"></div>
+                            <div class="ring-value">120/150g</div>
+                            <div class="ring-label">Protein</div>
+                        </div>
+                        <div class="ring">
+                            <div class="ring-bg"></div>
+                            <div class="ring-fill ring-carbs"></div>
+                            <div class="ring-value">180/200g</div>
+                            <div class="ring-label">Carbs</div>
+                        </div>
+                        <div class="ring">
+                            <div class="ring-bg"></div>
+                            <div class="ring-fill ring-fats"></div>
+                            <div class="ring-value">45/60g</div>
+                            <div class="ring-label">Fats</div>
+                        </div>
+                        <div class="ring">
+                            <div class="ring-bg"></div>
+                            <div class="ring-fill ring-calories"></div>
+                            <div class="ring-value">1850/2000</div>
+                            <div class="ring-label">Calories</div>
+                        </div>
+                    </div>
+                    <div style="background: white; padding: 16px; border-radius: 8px;">
+                        <div style="font-size: 14px; color: #718096; margin-bottom: 8px;">Recent Meals</div>
+                        <div class="meal-card" style="margin-bottom: 0;">
+                            <div>
+                                <div class="meal-name">Chicken & Rice</div>
+                                <div class="meal-macros">12:30 PM</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <ul class="features-list">
+                    <li>Progress rings as primary focus</li>
+                    <li>Data visualization prominent</li>
+                    <li>Quick meal history</li>
+                    <li>Goal-oriented design</li>
+                </ul>
+            </div>
+            
+            <!-- Direction 3: Conversation-Style -->
+            <div class="direction-card">
+                <h2 class="direction-title">3. Conversation-Style</h2>
+                <p class="direction-description">Chat-like interface for meal logging. Natural language input feels like a conversation.</p>
+                <div class="mockup">
+                    <div class="mockup-header">
+                        <div class="mockup-title">Log Your Meal</div>
+                    </div>
+                    <div style="padding: 16px;">
+                        <div class="chat-bubble">
+                            <div style="font-size: 14px; color: #718096; margin-bottom: 4px;">System</div>
+                            <div>What did you eat?</div>
+                        </div>
+                        <div class="chat-bubble chat-user">
+                            <div>Chicken and rice</div>
+                        </div>
+                        <div class="chat-bubble">
+                            <div style="font-size: 14px; color: #718096; margin-bottom: 4px;">System</div>
+                            <div>Found "Chicken & Rice" in your meals. Log it?</div>
+                            <div style="margin-top: 8px;">
+                                <button class="btn-primary" style="margin-right: 8px;">Yes</button>
+                                <button style="background: white; border: 2px solid #E2E8F0; padding: 8px 16px; border-radius: 6px;">Edit</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="position: absolute; bottom: 16px; left: 16px; right: 16px;">
+                        <input type="text" class="input-field" placeholder="Type your meal...">
+                    </div>
+                </div>
+                <ul class="features-list">
+                    <li>Chat-like interaction pattern</li>
+                    <li>Natural language input</li>
+                    <li>Conversational suggestions</li>
+                    <li>Feels like messaging</li>
+                </ul>
+            </div>
+            
+            <!-- Direction 4: Timeline View -->
+            <div class="direction-card">
+                <h2 class="direction-title">4. Timeline View</h2>
+                <p class="direction-description">Chronological meal tracking with time-based organization. See your day at a glance.</p>
+                <div class="mockup">
+                    <div class="mockup-header">
+                        <div class="mockup-title">Today</div>
+                        <button class="btn-primary">+ Log Meal</button>
+                    </div>
+                    <div style="padding: 16px;">
+                        <div class="timeline-item">
+                            <div class="timeline-time">8:00 AM</div>
+                            <div style="flex: 1;">
+                                <div class="meal-name">3 Eggs</div>
+                                <div class="meal-macros">18g P • 1g C • 15g F</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-time">12:30 PM</div>
+                            <div style="flex: 1;">
+                                <div class="meal-name">Chicken & Rice</div>
+                                <div class="meal-macros">45g P • 60g C • 12g F</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-time">6:00 PM</div>
+                            <div style="flex: 1;">
+                                <div class="meal-name">Salmon & Vegetables</div>
+                                <div class="meal-macros">35g P • 20g C • 18g F</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="background: white; padding: 16px; border-radius: 8px; margin-top: 16px;">
+                        <div style="display: flex; justify-content: space-around;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 20px; font-weight: 600; color: #1A202C;">98g</div>
+                                <div style="font-size: 12px; color: #718096;">Protein</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 20px; font-weight: 600; color: #1A202C;">81g</div>
+                                <div style="font-size: 12px; color: #718096;">Carbs</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 20px; font-weight: 600; color: #1A202C;">45g</div>
+                                <div style="font-size: 12px; color: #718096;">Fats</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <ul class="features-list">
+                    <li>Time-based organization</li>
+                    <li>Chronological meal display</li>
+                    <li>Daily overview</li>
+                    <li>Quick macro summary</li>
+                </ul>
+            </div>
+            
+            <!-- Direction 5: Grid Layout -->
+            <div class="direction-card">
+                <h2 class="direction-title">5. Grid Layout</h2>
+                <p class="direction-description">Visual meal cards in a responsive grid. Visual and scannable meal display.</p>
+                <div class="mockup">
+                    <div class="mockup-header">
+                        <div class="mockup-title">Today's Meals</div>
+                        <button class="btn-primary">+ Log Meal</button>
+                    </div>
+                    <div class="grid-layout">
+                        <div class="meal-card" style="flex-direction: column; align-items: flex-start;">
+                            <div class="meal-name" style="margin-bottom: 8px;">3 Eggs</div>
+                            <div class="meal-macros">18g P • 1g C • 15g F</div>
+                            <div style="margin-top: 8px;">
+                                <span class="tag tag-success">Breakfast</span>
+                            </div>
+                        </div>
+                        <div class="meal-card" style="flex-direction: column; align-items: flex-start;">
+                            <div class="meal-name" style="margin-bottom: 8px;">Chicken & Rice</div>
+                            <div class="meal-macros">45g P • 60g C • 12g F</div>
+                            <div style="margin-top: 8px;">
+                                <span class="tag tag-primary">Lunch</span>
+                            </div>
+                        </div>
+                        <div class="meal-card" style="flex-direction: column; align-items: flex-start;">
+                            <div class="meal-name" style="margin-bottom: 8px;">Salmon & Veg</div>
+                            <div class="meal-macros">35g P • 20g C • 18g F</div>
+                            <div style="margin-top: 8px;">
+                                <span class="tag tag-info">Dinner</span>
+                            </div>
+                        </div>
+                        <div class="meal-card" style="flex-direction: column; align-items: flex-start; border: 2px dashed #E2E8F0;">
+                            <div style="text-align: center; width: 100%; color: #718096; padding: 20px 0;">
+                                <div style="font-size: 24px; margin-bottom: 8px;">+</div>
+                                <div>Add Meal</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <ul class="features-list">
+                    <li>Visual grid layout</li>
+                    <li>Scannable meal cards</li>
+                    <li>Quick visual overview</li>
+                    <li>Easy meal addition</li>
+                </ul>
+            </div>
+            
+            <!-- Direction 6: List-Focused -->
+            <div class="direction-card">
+                <h2 class="direction-title">6. List-Focused</h2>
+                <p class="direction-description">Compact list with smart autocomplete. Efficient for quick logging and suggestions.</p>
+                <div class="mockup">
+                    <div class="mockup-header">
+                        <div class="mockup-title">Log Meal</div>
+                    </div>
+                    <div style="padding: 16px;">
+                        <input type="text" class="input-field" placeholder="Start typing meal name..." value="ch">
+                        <div class="suggestion-list">
+                            <div class="suggestion-item">
+                                <div class="meal-name">Chicken & Rice</div>
+                                <div class="meal-macros" style="font-size: 12px;">Most frequent • 45g P • 60g C • 12g F</div>
+                            </div>
+                            <div class="suggestion-item">
+                                <div class="meal-name">Chicken Breast</div>
+                                <div class="meal-macros" style="font-size: 12px;">Ingredient • 31g P per 100g</div>
+                            </div>
+                            <div class="suggestion-item">
+                                <div class="meal-name">Chickpea Salad</div>
+                                <div class="meal-macros" style="font-size: 12px;">Meal • 15g P • 40g C • 8g F</div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 24px; background: white; padding: 16px; border-radius: 8px;">
+                            <div style="font-size: 14px; color: #718096; margin-bottom: 12px;">Today's Summary</div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                <span style="color: #718096;">Protein</span>
+                                <span style="font-weight: 600;">98/150g</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                <span style="color: #718096;">Carbs</span>
+                                <span style="font-weight: 600;">81/200g</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="color: #718096;">Fats</span>
+                                <span style="font-weight: 600;">45/60g</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <ul class="features-list">
+                    <li>Smart autocomplete prominent</li>
+                    <li>Efficient list-based layout</li>
+                    <li>Quick suggestions</li>
+                    <li>Compact summary</li>
+                </ul>
+            </div>
+            
+            <!-- Direction 7: Split-Screen -->
+            <div class="direction-card">
+                <h2 class="direction-title">7. Split-Screen</h2>
+                <p class="direction-description">Logging on one side, progress on the other. See impact immediately.</p>
+                <div class="mockup">
+                    <div class="mockup-header">
+                        <div class="mockup-title">Meal Tracking</div>
+                    </div>
+                    <div class="split-screen">
+                        <div style="background: white; padding: 16px; border-radius: 8px;">
+                            <div style="font-size: 16px; font-weight: 600; margin-bottom: 16px;">Log Meal</div>
+                            <input type="text" class="input-field" placeholder="Meal name..." style="margin-bottom: 12px;">
+                            <div class="suggestion-item" style="margin-bottom: 12px;">
+                                <div class="meal-name">Chicken & Rice</div>
+                                <div class="meal-macros" style="font-size: 12px;">Suggested</div>
+                            </div>
+                            <button class="btn-primary" style="width: 100%;">Log Meal</button>
+                        </div>
+                        <div style="background: white; padding: 16px; border-radius: 8px;">
+                            <div style="font-size: 16px; font-weight: 600; margin-bottom: 16px;">Progress</div>
+                            <div style="text-align: center; margin-bottom: 16px;">
+                                <div style="font-size: 32px; font-weight: 600; color: #00B4A6;">1850</div>
+                                <div style="font-size: 12px; color: #718096;">/ 2000 calories</div>
+                            </div>
+                            <div style="margin-bottom: 8px;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                                    <span style="font-size: 14px; color: #718096;">Protein</span>
+                                    <span style="font-size: 14px; font-weight: 600;">120/150g</span>
+                                </div>
+                                <div style="height: 8px; background: #E2E8F0; border-radius: 4px; overflow: hidden;">
+                                    <div style="height: 100%; background: #48BB78; width: 80%;"></div>
+                                </div>
+                            </div>
+                            <div style="margin-bottom: 8px;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                                    <span style="font-size: 14px; color: #718096;">Carbs</span>
+                                    <span style="font-size: 14px; font-weight: 600;">180/200g</span>
+                                </div>
+                                <div style="height: 8px; background: #E2E8F0; border-radius: 4px; overflow: hidden;">
+                                    <div style="height: 100%; background: #4299E1; width: 90%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <ul class="features-list">
+                    <li>Dual-pane layout</li>
+                    <li>Immediate feedback</li>
+                    <li>Contextual progress</li>
+                    <li>Efficient workflow</li>
+                </ul>
+            </div>
+            
+            <!-- Direction 8: Mobile-First Quick Log -->
+            <div class="direction-card">
+                <h2 class="direction-title">8. Mobile-First Quick Log</h2>
+                <p class="direction-description">Optimized for quick mobile logging. Large touch targets, one-tap actions.</p>
+                <div class="mockup">
+                    <div class="mockup-header">
+                        <div class="mockup-title">Quick Log</div>
+                    </div>
+                    <div style="padding: 16px;">
+                        <div style="background: white; padding: 24px; border-radius: 12px; margin-bottom: 16px; text-align: center;">
+                            <div style="font-size: 14px; color: #718096; margin-bottom: 8px;">Your usual breakfast?</div>
+                            <div class="meal-name" style="font-size: 20px; margin-bottom: 8px;">3 Eggs</div>
+                            <div class="meal-macros" style="font-size: 14px;">18g P • 1g C • 15g F</div>
+                            <button class="btn-primary" style="width: 100%; margin-top: 16px; padding: 16px; font-size: 16px;">Log It</button>
+                        </div>
+                        <div style="background: white; padding: 16px; border-radius: 8px;">
+                            <div style="font-size: 14px; color: #718096; margin-bottom: 12px;">Or search for a meal</div>
+                            <input type="text" class="input-field" placeholder="Type to search...">
+                        </div>
+                    </div>
+                    <div style="position: absolute; bottom: 16px; left: 16px; right: 16px;">
+                        <div style="background: white; padding: 12px; border-radius: 8px; display: flex; justify-content: space-around;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 18px; font-weight: 600; color: #1A202C;">120g</div>
+                                <div style="font-size: 11px; color: #718096;">Protein</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 18px; font-weight: 600; color: #1A202C;">180g</div>
+                                <div style="font-size: 11px; color: #718096;">Carbs</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 18px; font-weight: 600; color: #1A202C;">45g</div>
+                                <div style="font-size: 11px; color: #718096;">Fats</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <ul class="features-list">
+                    <li>Large touch targets</li>
+                    <li>One-tap logging</li>
+                    <li>Proactive suggestions</li>
+                    <li>Mobile-optimized</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div style="background: white; padding: 24px; border-radius: 12px; margin-top: 48px;">
+            <h2 style="font-size: 24px; font-weight: 600; margin-bottom: 16px;">Evaluation Criteria</h2>
+            <p style="margin-bottom: 16px; color: #718096;">As you explore the design directions, consider:</p>
+            <ul style="list-style: none; padding: 0;">
+                <li style="padding: 8px 0; color: #2D3748;">✅ <strong>Layout Intuitiveness</strong> - Which information hierarchy matches your priorities?</li>
+                <li style="padding: 8px 0; color: #2D3748;">✅ <strong>Interaction Style</strong> - Which interaction style fits your core experience?</li>
+                <li style="padding: 8px 0; color: #2D3748;">✅ <strong>Visual Weight</strong> - Which visual density feels right for your brand?</li>
+                <li style="padding: 8px 0; color: #2D3748;">✅ <strong>Navigation Approach</strong> - Which navigation pattern matches user expectations?</li>
+                <li style="padding: 8px 0; color: #2D3748;">✅ <strong>Component Usage</strong> - How well do the components support your user journeys?</li>
+                <li style="padding: 8px 0; color: #2D3748;">✅ <strong>Brand Alignment</strong> - Which direction best supports your emotional goals (accomplishment, confidence)?</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
