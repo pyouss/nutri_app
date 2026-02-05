@@ -46,14 +46,35 @@ let supabase: SupabaseClient | null = null
  * Gets the Supabase client instance (singleton pattern).
  * Validates environment variables and creates client on first call.
  * 
+ * Note: In API routes, authentication is handled via Bearer token in Authorization header.
+ * The client-side uses localStorage for session persistence.
+ * 
  * @returns {SupabaseClient} The Supabase client instance
  * @throws {Error} If environment variables are missing or invalid
  */
 function getSupabaseClient(): SupabaseClient {
   validateSupabaseConfig()
   
+  // Server-side: Create a fresh client each time (no session persistence needed)
+  if (typeof window === 'undefined') {
+    return createClient(supabaseUrl!, supabaseAnonKey!, {
+      auth: {
+        persistSession: false,
+        autoRefreshToken: false,
+        detectSessionInUrl: false,
+      },
+    })
+  }
+  
+  // Client-side: Use singleton with localStorage
   if (!supabase) {
-    supabase = createClient(supabaseUrl!, supabaseAnonKey!)
+    supabase = createClient(supabaseUrl!, supabaseAnonKey!, {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+        detectSessionInUrl: true,
+      },
+    })
   }
   
   return supabase
@@ -66,5 +87,33 @@ function getSupabaseClient(): SupabaseClient {
  */
 // validateSupabaseConfig is already defined above
 
+/**
+ * Creates an authenticated Supabase client for server-side use with RLS.
+ * This client will have the auth context set, allowing RLS policies to work properly.
+ * 
+ * @param accessToken - The user's access token from Authorization header
+ * @returns {SupabaseClient} Authenticated Supabase client with RLS context
+ */
+function createAuthenticatedClient(accessToken: string): SupabaseClient {
+  validateSupabaseConfig()
+  
+  return createClient(supabaseUrl!, supabaseAnonKey!, {
+    global: {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    },
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false,
+      detectSessionInUrl: false,
+    },
+  })
+}
+
 // Export the client getter function
-export { getSupabaseClient as supabase, validateSupabaseConfig }
+export { 
+  getSupabaseClient as supabase, 
+  createAuthenticatedClient,
+  validateSupabaseConfig 
+}

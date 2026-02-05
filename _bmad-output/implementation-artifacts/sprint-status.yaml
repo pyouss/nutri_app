@@ -50,18 +50,18 @@ development_status:
   epic-1-retrospective: optional
 
   # Epic 2: User Authentication & Account Management
-  epic-2: backlog
-  2-1-user-registration: backlog
-  2-2-user-login: backlog
-  2-3-user-logout: backlog
-  2-4-session-management-and-protected-routes: backlog
-  2-5-account-information-display: backlog
+  epic-2: done
+  2-1-user-registration: done
+  2-2-user-login: done
+  2-3-user-logout: done
+  2-4-session-management-and-protected-routes: done
+  2-5-account-information-display: done
   epic-2-retrospective: optional
 
   # Epic 3: Basic Meal Logging
-  epic-3: backlog
-  3-1-create-meal-entry-form: backlog
-  3-2-save-meal-to-database: backlog
+  epic-3: in-progress
+  3-1-create-meal-entry-form: done
+  3-2-save-meal-to-database: done
   3-3-view-meal-list: backlog
   3-4-search-and-filter-meals: backlog
   3-5-edit-meal: backlog

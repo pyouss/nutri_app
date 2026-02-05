@@ -1,14 +1,96 @@
 'use client'
 
-import { Box, Button, Heading, Text, Stack, Flex } from '@chakra-ui/react'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import { Box, Button, Heading, Text, Stack, Flex, Spinner } from '@chakra-ui/react'
+import Link from 'next/link'
+import { supabase } from '@/lib/db/supabase'
+import type { User } from '@supabase/supabase-js'
 
 export default function Home() {
+  const router = useRouter()
+  const [user, setUser] = useState<User | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    // Check if user is logged in
+    const checkUser = async () => {
+      try {
+        const { data: { session } } = await supabase().auth.getSession()
+        setUser(session?.user ?? null)
+      } catch (error) {
+        console.error('Error checking session:', error)
+        setUser(null)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    checkUser()
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase().auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null)
+    })
+
+    return () => {
+      subscription.unsubscribe()
+    }
+  }, [])
+
+  const handleLogout = async () => {
+    try {
+      const { error } = await supabase().auth.signOut()
+      if (error) {
+        console.error('Logout error:', error)
+        alert('Failed to log out properly. Please try again or clear your browser cookies.')
+        return // Don't redirect if logout failed
+      }
+      // Only redirect on successful logout
+      router.push('/login')
+      router.refresh()
+    } catch (error) {
+      console.error('Unexpected logout error:', error)
+      alert('An unexpected error occurred during logout. Please clear your browser cookies.')
+      // Don't redirect on unexpected errors
+    }
+  }
+
   return (
     <Box p={8} minH="100vh" bg="gray.50">
       <Stack gap={6} align="stretch" maxW="1200px" mx="auto">
-        <Heading as="h1" size="3xl" color="gray.800">
-          nutri_app
-        </Heading>
+        <Flex justify="space-between" align="center">
+          <Heading as="h1" size="3xl" color="gray.800">
+            nutri_app
+          </Heading>
+          {isLoading ? (
+            <Spinner size="sm" color="primary.500" />
+          ) : user ? (
+            <Stack direction="row" spacing={4} align="center">
+              <Button as={Link} href="/meals/new" colorScheme="primary" variant="solid" size="sm">
+                Log Meal
+              </Button>
+              <Button as={Link} href="/account" colorScheme="primary" variant="ghost" size="sm">
+                Account
+              </Button>
+              <Text color="gray.700" fontSize="sm">
+                {user.email}
+              </Text>
+              <Button onClick={handleLogout} colorScheme="primary" variant="outline">
+                Log Out
+              </Button>
+            </Stack>
+          ) : (
+            <Stack direction="row" spacing={4}>
+              <Button as={Link} href="/signup" colorScheme="primary" variant="outline">
+                Sign Up
+              </Button>
+              <Button as={Link} href="/login" colorScheme="primary">
+                Log In
+              </Button>
+            </Stack>
+          )}
+        </Flex>
         
         <Text fontSize="md" color="gray.700">
           Learning-first nutrition tracking webapp
