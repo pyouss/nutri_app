@@ -16,6 +16,9 @@ import {
 } from '@chakra-ui/react'
 import Link from 'next/link'
 import { supabase } from '@/lib/db/supabase'
+import { DailyMacroTracker } from '@/components/features/meals/DailyMacroTracker'
+import { PageHeader } from '@/components/common/PageHeader'
+import { AppShell } from '@/components/common/AppShell'
 
 export default function DashboardPage() {
   const router = useRouter()
@@ -67,23 +70,25 @@ export default function DashboardPage() {
 
   if (isLoading) {
     return (
-      <Box minH="100vh" display="flex" alignItems="center" justifyContent="center" bg="gray.50">
-        <VStack spacing={4}>
+      <AppShell>
+        <VStack spacing={4} py={12} align="center" justify="center">
           <Spinner size="xl" color="primary.500" />
           <Text color="gray.600">Loading...</Text>
         </VStack>
-      </Box>
+      </AppShell>
     )
   }
 
   if (error) {
     return (
-      <Box minH="100vh" display="flex" alignItems="center" justifyContent="center" bg="gray.50" p={4}>
-        <Alert status="error" maxW="400px">
-          <AlertIcon />
-          {error}
-        </Alert>
-      </Box>
+      <AppShell>
+        <Box py={12} display="flex" alignItems="center" justifyContent="center">
+          <Alert status="error" maxW="400px">
+            <AlertIcon />
+            {error}
+          </Alert>
+        </Box>
+      </AppShell>
     )
   }
 
@@ -92,48 +97,55 @@ export default function DashboardPage() {
   }
 
   return (
-    <Box minH="100vh" bg="gray.50" p={8}>
-      <Stack gap={6} align="stretch" maxW="1200px" mx="auto">
-        <HStack justify="space-between" align="center">
-          <Heading as="h1" size="3xl" color="gray.800">
-            Dashboard
-          </Heading>
-          <HStack spacing={4}>
-            <Button as={Link} href="/meals/new" colorScheme="primary" variant="solid">
-              Log New Meal
-            </Button>
-            <Button as={Link} href="/account" colorScheme="primary" variant="outline">
-              View Account
-            </Button>
-          </HStack>
-        </HStack>
-        
-        <Box p={6} bg="white" borderRadius="md" boxShadow="sm">
-          <VStack align="stretch" spacing={4}>
-            <Heading as="h2" size="xl" color="gray.800">
-              Welcome back!
-            </Heading>
-            
-            <Text color="gray.700">
-              You are successfully logged in and viewing a protected route.
-            </Text>
+    <AppShell>
+      <Stack gap={6} align="stretch">
+          <PageHeader
+            title="Dashboard"
+            subtitle="See today’s macros, recent meals, and your active nutrition phase in one place."
+            actions={(
+              <HStack spacing={3}>
+                <Button as={Link} href="/nutrition-plan" colorScheme="primary" variant="ghost">
+                  My plan
+                </Button>
+                <Button as={Link} href="/meals" colorScheme="primary" variant="outline">
+                  View meals
+                </Button>
+                <Button as={Link} href="/meals/new" colorScheme="primary">
+                  Log meal
+                </Button>
+              </HStack>
+            )}
+          />
 
-            <Box p={4} bg="gray.50" borderRadius="md">
-              <Text fontSize="sm" color="gray.600" mb={2}>
-                <strong>Email:</strong> {user.email}
-              </Text>
-              <Text fontSize="sm" color="gray.600">
-                <strong>User ID:</strong> {user.id}
-              </Text>
-            </Box>
+          <DailyMacroTracker />
 
-            <Text color="gray.600" fontSize="sm">
-              This is a protected route. Only authenticated users can access this page.
-              Try refreshing the page - your session will persist!
-            </Text>
-          </VStack>
-        </Box>
-      </Stack>
-    </Box>
+          <Box p={6} bg="white" borderRadius="lg" boxShadow="sm">
+            <VStack align="stretch" spacing={4}>
+              <Heading as="h2" size="md" color="gray.800">
+                Welcome back, {user.email}
+              </Heading>
+
+              <Text color="gray.700">
+                You’re on a protected page. Your session is kept in sync so you can safely refresh
+                or move between pages without losing access.
+              </Text>
+
+              <Box p={4} bg="gray.50" borderRadius="md">
+                <Text fontSize="sm" color="gray.600" mb={1}>
+                  <strong>Email:</strong> {user.email}
+                </Text>
+                <Text fontSize="sm" color="gray.600">
+                  <strong>User ID:</strong> {user.id}
+                </Text>
+              </Box>
+
+              <Text color="gray.600" fontSize="sm">
+                From here you can review your meals, follow your nutrition plan, and keep your
+                daily macros on track.
+              </Text>
+            </VStack>
+          </Box>
+        </Stack>
+    </AppShell>
   )
 }

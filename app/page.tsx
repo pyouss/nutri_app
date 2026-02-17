@@ -2,7 +2,19 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { Box, Button, Heading, Text, Stack, Flex, Spinner } from '@chakra-ui/react'
+import {
+  Box,
+  Button,
+  Heading,
+  Text,
+  Stack,
+  Flex,
+  Spinner,
+  Container,
+  SimpleGrid,
+  Icon,
+} from '@chakra-ui/react'
+import { CheckCircleIcon, TimeIcon, EditIcon } from '@chakra-ui/icons'
 import Link from 'next/link'
 import { supabase } from '@/lib/db/supabase'
 import type { User } from '@supabase/supabase-js'
@@ -13,7 +25,6 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    // Check if user is logged in
     const checkUser = async () => {
       try {
         const { data: { session } } = await supabase().auth.getSession()
@@ -28,7 +39,6 @@ export default function Home() {
 
     checkUser()
 
-    // Listen for auth changes
     const { data: { subscription } } = supabase().auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null)
     })
@@ -38,104 +48,152 @@ export default function Home() {
     }
   }, [])
 
-  const handleLogout = async () => {
-    try {
-      const { error } = await supabase().auth.signOut()
-      if (error) {
-        console.error('Logout error:', error)
-        alert('Failed to log out properly. Please try again or clear your browser cookies.')
-        return // Don't redirect if logout failed
-      }
-      // Only redirect on successful logout
-      router.push('/login')
-      router.refresh()
-    } catch (error) {
-      console.error('Unexpected logout error:', error)
-      alert('An unexpected error occurred during logout. Please clear your browser cookies.')
-      // Don't redirect on unexpected errors
+  const handlePrimaryCta = () => {
+    if (user) {
+      router.push('/dashboard')
+    } else {
+      router.push('/signup')
     }
   }
 
   return (
-    <Box p={8} minH="100vh" bg="gray.50">
-      <Stack gap={6} align="stretch" maxW="1200px" mx="auto">
-        <Flex justify="space-between" align="center">
-          <Heading as="h1" size="3xl" color="gray.800">
-            nutri_app
-          </Heading>
+    <Box minH="100vh" bgGradient="linear(to-b, primary.50, white)">
+      <Container maxW="container.xl" py={{ base: 10, md: 16 }}>
+        {/* Top bar */}
+        <Flex justify="space-between" align="center" mb={{ base: 8, md: 12 }}>
+          <Flex align="center" gap={2}>
+            <Box
+              w={8}
+              h={8}
+              borderRadius="full"
+              bg="primary.500"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Text fontWeight="bold" color="white">n</Text>
+            </Box>
+            <Heading as="h1" size="md" color="gray.800">
+              nutri_app
+            </Heading>
+          </Flex>
+
           {isLoading ? (
             <Spinner size="sm" color="primary.500" />
           ) : user ? (
-            <Stack direction="row" spacing={4} align="center">
-              <Button as={Link} href="/meals/new" colorScheme="primary" variant="solid" size="sm">
-                Log Meal
-              </Button>
-              <Button as={Link} href="/account" colorScheme="primary" variant="ghost" size="sm">
-                Account
-              </Button>
-              <Text color="gray.700" fontSize="sm">
+            <Flex align="center" gap={3}>
+              <Text fontSize="sm" color="gray.600">
                 {user.email}
               </Text>
-              <Button onClick={handleLogout} colorScheme="primary" variant="outline">
-                Log Out
+              <Button
+                as={Link}
+                href="/dashboard"
+                colorScheme="primary"
+                size="sm"
+              >
+                Go to dashboard
               </Button>
-            </Stack>
+            </Flex>
           ) : (
-            <Stack direction="row" spacing={4}>
-              <Button as={Link} href="/signup" colorScheme="primary" variant="outline">
-                Sign Up
+            <Flex gap={3}>
+              <Button as={Link} href="/login" variant="ghost" size="sm">
+                Log in
               </Button>
-              <Button as={Link} href="/login" colorScheme="primary">
-                Log In
+              <Button as={Link} href="/signup" colorScheme="primary" size="sm">
+                Sign up
               </Button>
-            </Stack>
+            </Flex>
           )}
         </Flex>
-        
-        <Text fontSize="md" color="gray.700">
-          Learning-first nutrition tracking webapp
-        </Text>
-        
-        <Box p={6} bg="white" borderRadius="md" boxShadow="sm">
-          <Heading as="h2" size="2xl" mb={4} color="gray.800">
-            Chakra UI Setup Verification
-          </Heading>
-          
-          <Text mb={4} color="gray.700">
-            This page demonstrates that Chakra UI is properly configured with the custom theme.
-          </Text>
-          
-          <Stack gap={4} align="stretch">
+
+        {/* Hero section */}
+        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={{ base: 10, md: 16 }} alignItems="center">
+          <Stack spacing={6}>
+            <Heading as="h2" size="2xl" color="gray.800">
+              Build nutrition habits,
+              <br /> one meal at a time.
+            </Heading>
+            <Text fontSize="lg" color="gray.700" maxW="lg">
+              A learning-first nutrition tracker that helps you log meals, follow a structured plan,
+              and understand how daily choices add up over time.
+            </Text>
+
             <Flex gap={4} wrap="wrap">
-              <Button colorScheme="primary">Primary Button</Button>
-              <Button colorScheme="secondary">Secondary Button</Button>
-              <Button colorScheme="success">Success Button</Button>
-              <Button colorScheme="warning">Warning Button</Button>
+              <Button
+                colorScheme="primary"
+                size="lg"
+                onClick={handlePrimaryCta}
+              >
+                {user ? 'Open dashboard' : 'Get started free'}
+              </Button>
+              {!user && (
+                <Button
+                  as={Link}
+                  href="/login"
+                  variant="outline"
+                  size="lg"
+                >
+                  I already have an account
+                </Button>
+              )}
             </Flex>
-            
-            <Box p={4} bg="primary.50" borderRadius="md">
-              <Text color="primary.700" fontWeight="semibold">
-                Primary color background (primary.50)
-              </Text>
-            </Box>
-            
-            <Box p={4} bg="gray.100" borderRadius="md">
-              <Text color="gray.700">
-                Gray background (gray.100) with body text color (gray.700)
-              </Text>
-            </Box>
-            
-            <Stack gap={2} align="stretch">
-              <Heading as="h3" size="xl" color="gray.800">Heading 3 (20px, semibold)</Heading>
-              <Heading as="h4" size="lg" color="gray.800">Heading 4 (18px, semibold)</Heading>
-              <Text fontSize="lg">Body Large (18px)</Text>
-              <Text fontSize="md">Body Default (16px)</Text>
-              <Text fontSize="sm" color="gray.500">Body Small (14px, muted)</Text>
-              <Text fontSize="xs" color="gray.500">Caption (12px, muted)</Text>
-            </Stack>
+
+            <Flex gap={6} fontSize="sm" color="gray.600" flexWrap="wrap">
+              <Flex align="center" gap={2}>
+                <Icon as={CheckCircleIcon} color="success.400" />
+                <Text>No calorie math required</Text>
+              </Flex>
+              <Flex align="center" gap={2}>
+                <Icon as={TimeIcon} color="primary.500" />
+                <Text>Log a meal in under 30s</Text>
+              </Flex>
+            </Flex>
           </Stack>
-        </Box>
-      </Stack>
+
+          {/* Highlight card */}
+          <Box
+            bg="white"
+            borderRadius="2xl"
+            boxShadow="xl"
+            p={6}
+          >
+            <Stack spacing={5}>
+              <Heading as="h3" size="md" color="gray.800">
+                Today at a glance
+              </Heading>
+              <Text fontSize="sm" color="gray.600">
+                Track your meals, macros, and follow your nutrition plan from a single dashboard.
+              </Text>
+
+              <Stack spacing={3}>
+                <Flex justify="space-between" align="center">
+                  <Text fontSize="sm" color="gray.600">Logged meals</Text>
+                  <Text fontWeight="semibold" color="gray.800">Breakfast, Lunch</Text>
+                </Flex>
+                <Flex justify="space-between" align="center">
+                  <Text fontSize="sm" color="gray.600">Daily macros</Text>
+                  <Text fontWeight="semibold" color="primary.600">On track</Text>
+                </Flex>
+                <Flex justify="space-between" align="center">
+                  <Text fontSize="sm" color="gray.600">Active phase</Text>
+                  <Text fontWeight="semibold" color="gray.800">Lean gain • Week 3</Text>
+                </Flex>
+              </Stack>
+
+              <Button
+                leftIcon={<Icon as={EditIcon} />}
+                colorScheme="primary"
+                variant="outline"
+                alignSelf="flex-start"
+                as={Link}
+                href={user ? '/meals/new' : '/signup'}
+              >
+                {user ? 'Log your next meal' : 'See how it works'}
+              </Button>
+            </Stack>
+          </Box>
+        </SimpleGrid>
+      </Container>
     </Box>
   )
 }

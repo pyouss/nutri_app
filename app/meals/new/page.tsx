@@ -310,15 +310,16 @@ export default function NewMealPage() {
 
       // Success!
       setSuccess(true)
+
+      // Notify other components (like DailyMacroTracker) that meals changed
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new Event('meals:changed'))
+      }
       
-      // Reset form
-      setMealName('')
-      setMealDate(new Date().toISOString().split('T')[0])
-      setIngredients([{ id: '1', name: '', portionSize: '', calories: '', protein: '', carbs: '', fat: '' }])
-      setMealCalories('')
-      setMealProtein('')
-      setMealCarbs('')
-      setMealFat('')
+      // Redirect to meals list after short delay to show success message
+      setTimeout(() => {
+        router.push('/meals')
+      }, 1000)
 
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to save meal')
@@ -624,7 +625,7 @@ export default function NewMealPage() {
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => router.push('/dashboard')}
+                  onClick={() => router.push('/meals')}
                   isDisabled={isLoading}
                 >
                   Cancel

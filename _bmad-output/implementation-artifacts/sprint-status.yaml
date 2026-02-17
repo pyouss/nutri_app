@@ -62,7 +62,7 @@ development_status:
   epic-3: in-progress
   3-1-create-meal-entry-form: done
   3-2-save-meal-to-database: done
-  3-3-view-meal-list: backlog
+  3-3-view-meal-list: review
   3-4-search-and-filter-meals: backlog
   3-5-edit-meal: backlog
   3-6-delete-meal: backlog

@@ -164,6 +164,20 @@ const components = {
       color: 'gray.700', // Default body text color
     },
   },
+  Button: {
+    baseStyle: {
+      borderRadius: 'full',
+      fontWeight: 'semibold',
+    },
+  },
+  Card: {
+    baseStyle: {
+      borderRadius: 'xl',
+      boxShadow: 'sm',
+      borderWidth: '1px',
+      borderColor: 'gray.100',
+    },
+  },
 }
 
 // Extend Chakra UI default theme
