@@ -181,7 +181,7 @@ async function runMigration() {
     console.log('      npm run import:nutrition-plan-v2')
     console.log('')
     console.log('   2. Verify in Supabase Dashboard:')
-    console.log(`      ${supabaseUrl.replace('//', '//app.')}/project/YOUR_PROJECT/editor`)
+    console.log(`      ${(supabaseUrl ?? '').replace('//', '//app.')}/project/YOUR_PROJECT/editor`)
     console.log('')
     console.log('   3. Update UI components to use new schema')
     console.log('')
