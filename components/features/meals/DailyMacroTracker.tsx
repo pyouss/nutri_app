@@ -18,7 +18,7 @@ import {
   Badge,
   Skeleton,
 } from '@chakra-ui/react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { supabase } from '@/lib/db/supabase'
 import { motion } from 'framer-motion'
 
@@ -42,11 +42,7 @@ export function DailyMacroTracker() {
   const [actual, setActual] = useState<MacroActual>({ calories: 0, protein: 0, carbs: 0, fat: 0 })
   const [date, setDate] = useState(new Date().toISOString().split('T')[0])
 
-  useEffect(() => {
-    loadMacroData()
-  }, [date])
-
-  const loadMacroData = async () => {
+  const loadMacroData = useCallback(async () => {
     try {
       setIsLoading(true)
       const { data: { session } } = await supabase().auth.getSession()
@@ -101,7 +97,11 @@ export function DailyMacroTracker() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [date])
+
+  useEffect(() => {
+    loadMacroData()
+  }, [loadMacroData])
 
   // Keep macros in sync when meals change using a simple browser event
   useEffect(() => {
@@ -115,7 +115,7 @@ export function DailyMacroTracker() {
     return () => {
       window.removeEventListener('meals:changed', handler)
     }
-  }, [date])
+  }, [loadMacroData])
 
   const calculatePercentage = (actual: number, target: number): number => {
     if (!target) return 0
@@ -135,7 +135,7 @@ export function DailyMacroTracker() {
     return (
       <Card>
         <CardHeader>
-          <Heading size="md">Today's Macros</Heading>
+          <Heading size="md">Today&apos;s Macros</Heading>
         </CardHeader>
         <CardBody>
           <VStack spacing={4}>
@@ -152,7 +152,7 @@ export function DailyMacroTracker() {
     return (
       <Card>
         <CardHeader>
-          <Heading size="md">Today's Macros</Heading>
+          <Heading size="md">Today&apos;s Macros</Heading>
         </CardHeader>
         <CardBody>
           <Text color="gray.600">
@@ -172,7 +172,7 @@ export function DailyMacroTracker() {
     <Card>
       <CardHeader>
         <HStack justify="space-between">
-          <Heading size="md">Today's Macros</Heading>
+          <Heading size="md">Today&apos;s Macros</Heading>
           <Badge colorScheme={caloriesPercentage >= 90 ? 'green' : 'yellow'}>
             {caloriesPercentage}% of target
           </Badge>

@@ -185,7 +185,7 @@ export function MealCard({ meal, onDelete }: MealCardProps) {
           </AlertDialogHeader>
 
           <AlertDialogBody>
-            Are you sure you want to delete "{meal.meal_name}"? This action cannot be undone.
+            Are you sure you want to delete &quot;{meal.meal_name}&quot;? This action cannot be undone.
           </AlertDialogBody>
 
           <AlertDialogFooter>

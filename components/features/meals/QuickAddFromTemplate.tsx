@@ -47,6 +47,7 @@ export function QuickAddFromTemplate({ isOpen, onClose, onSuccess }: QuickAddFro
     if (isOpen) {
       loadTemplates()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen])
 
   const loadTemplates = async () => {

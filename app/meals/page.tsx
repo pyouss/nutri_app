@@ -58,6 +58,7 @@ export default function MealsPage() {
 
   useEffect(() => {
     loadMeals()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router])
 
   if (isLoading) {
